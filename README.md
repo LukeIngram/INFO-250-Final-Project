@@ -140,8 +140,17 @@ The connections (Relationships) between the tables are as follows:
 14: Uses the compares the Line1 & Lines_dashed columns. Lines_dashed is
 added to dataset 2 with the following python script:
 
-![A computer screen shot of a code Description automatically
-generated](./media/image2.png)
+```python
+df = pd.read_csv('NYC_Transit_Subway_Entrance_And_Exit_Data.csv')
+
+cols = [f"Route{i}" for i in range(1,12)]
+
+df['Lines_dashed'] = df[cols].apply(lambda row: '-'.join([str(x) for x in row if pd.notnull(x) and str(x) != '']), axis=1)
+df['Lines_dashed_first'] = df[cols].apply(lambda row: '-'.join([str(x) for x in row if pd.notnull(x) and str(x) != ''])[0], axis=1)
+df['Lines'] = df[cols].apply(lambda row: ', '.join([str(x) for x in row if pd.notnull(x) and str(x) != '']), axis=1)
+
+df.to_csv("merged_lines_NYC_Transit_Subway_Entrance_And_Exit_Data.csv")
+```
 
 45: Uses the Lines_dashed_first and Rt symbol columns.
 Lines_dashed_first is added to dataset 2 with the above python script.
